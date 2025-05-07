@@ -3,14 +3,26 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>My Web App</title>
+  <title>VerbFR</title>
   <link rel="stylesheet" href="style.css" />
+  <script src="script.js"></script>
 </head>
 <body>
-  <h1>Hello from My Web App!</h1>
-  <button id="clickMe">Click Me</button>
-  <p id="message"></p>
+  <h1>VerbeFR</h1>
+  <p>This applet will help you study French verb congugation.</p>
 
-  <script src="script.js"></script>
+  <button type=""button" onclick="getVerb()">Get Verb!</button>
+
+  <p id="verb"></p>
+  <p id="tense"></p>
+  <p id="regular"></p>
+
+  <form onsubmit="checkEntry(); return false" autocomplete="off">
+    <label id="subject"></label>
+    <input type="text" id="solution" name="solution"><br><br>
+    <input type="submit" value="Submit">
+  </form>
+
+  <p id="correct"></p>
 </body>
 </html>
