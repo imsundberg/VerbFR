@@ -84,12 +84,7 @@ function getRandomDisplaySubject() {
 
 // Returns conjugation of infinitive for given tense and subject
 function getSolution() {
-    var ending = verb.conjugation[verb.subject];
-    if (verb.tense !== "passé composé") { 
-        return verb.infinitive.slice(0,verb.infinitive.length-2) + ending;
-    } else {
-        return ending
-    }
+    return verb.conjugation[verb.subject]
 }
 
 // Prompts user that input is (in)correct 
