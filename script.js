@@ -6,7 +6,7 @@ var subjects = ['je', 'tu', 'iel', 'nous', 'vous', 'iels'];
 // Updates HTML with verb info
 // Sets solution and verb (global variables)
 function getVerb() {
-    fetch('./data2.json')
+    fetch('./data.json')
         .then(res => res.json())
         .then(data => {
             // Clear input text from previous entry (if any)
