@@ -1,86 +1,95 @@
 // Global variable set by getVerb function
-var verb = ""
+var verb = ""; // verb has format {infinitive, meaning, group, conjugation, tense, subject, solution}
 var subjects = ['je', 'tu', 'iel', 'nous', 'vous', 'iels'];
 
-// Selects a random verb from JSON data and saves as global object
+// Selects a random verb from JSON data
 // Updates HTML with verb info
 // Sets solution and verb (global variables)
 function getVerb() {
-    fetch('./data.json')
+    fetch('./data2.json')
         .then(res => res.json())
         .then(data => {
-            // Clear input text from any previous entries
+            // Clear input text from previous entry (if any)
             document.getElementById("solution").value = "";
             // Set (global) verb object with data from JSON file
-            verb = data.verbs[getRandom(0,data.verbs.length-1)];
+            verb = data.verbs[getRandom(0,data.verbs.length-1)]; // verb defined globally
             verb.tense = getRandomTense();
             verb.subject = getRandomSubject();
-            verb.solution = getSolution();
-
-            // Update HTML with verb data
-            document.getElementById("verb").innerHTML = "Verb: " + verb.infinitive;
-            document.getElementById("meaning").innerHTML = "Meaning: " + verb.meaning;
-            document.getElementById("tense").innerHTML = "Verb tense: " + verb.tense;
-            document.getElementById("regular").innerHTML = "Verb regularity: " + verb.group;
-            document.getElementById("subject").innerHTML = getRandomDisplaySubject();
+            // TO DO: change to error if tense is not chosen by user?
+            if ( verb.tense != undefined) {
+                verb.conjugation = verb.conjugations[verb.tense];
+                delete verb.conjugations; // only store conjugation for specific tense
+                verb.solution = getSolution();
+                // Update HTML with verb data
+                document.getElementById("verb").innerHTML = "Verb: " + verb.infinitive;
+                document.getElementById("solution").placeholder = verb.infinitive;
+                document.getElementById("meaning").innerHTML = "Meaning: " + verb.meaning;
+                document.getElementById("tense").innerHTML = "Verb tense: " + verb.tense;
+                document.getElementById("regular").innerHTML = "Verb regularity: " + verb.group;
+                document.getElementById("subject").innerHTML = getRandomDisplaySubject();
+            } else {
+                // Prompt user to provide tense
+                document.getElementById('tense').innerHTML = "Please select tense(s) to study.";
+                // Clear text from previous verb
+                document.getElementById("solution").placeholder = "";
+                document.getElementById("verb").innerHTML = "";
+                document.getElementById("meaning").innerHTML = "";
+                document.getElementById("regular").innerHTML = "";
+                document.getElementById("subject").innerHTML = "";
+                document.getElementById("correct").innerHTML = "";
+            }
     })
 }
 
-// Returns random number between min and max (inclusive)
+// Returns random number inclusively between nonnegative integers min and max
 function getRandom(min, max) {
-    min = Math.ceil(min);
-    max = Math.floor(max);
     return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
-// Returns random verb tense
-// TO DO add additional tenses
+// Returns random tense from user selected tenses (checkboxes)
+// TO DO: throw error if user has not selected any tense checkboxes (currently fixed with if-then statement in getVerb)
 function getRandomTense() {
-    var randomTense = getRandom(0, 3);
-    if(randomTense == 0) {
-        return "présent";
-    } else if(randomTense == 1) {
-        return "imparfait";
-    } else if(randomTense == 2) {
-        return "futur simple";
-    } else if (randomTense == 3) {
-        return "conditionnel présent";
-    } else if (randomTense == 4) {
-        return "subjonctif présent"
-    } else {
-        return "passé composé"
+    var tenses = document.getElementsByClassName("tense"); // list of all checkboxes with class="tense"
+    var selectedTenses = []; // list of all selected tenses (as strings from element id)
+    for (var i = 0; i < tenses.length; i++) {
+        if (tenses[i].checked) {
+            selectedTenses.push(tenses[i].id);
+        }
     }
+    return selectedTenses[getRandom(0, selectedTenses.length-1)];
 }
 
-// Returns random subject from subjects array
+// Returns random subject from subjects array (global variable)
 function getRandomSubject() {
-    var subject = getRandom(0, 5);
+    var subject = getRandom(0, subjects.length-1);
     return subjects[subject];
 }
 
+// Returns a random subject to display
+// allows for randomness in il/elle/on/iel or ils/elles/iels
+// otherwise displays subjects normally
+function getRandomDisplaySubject() {
+    if (verb.subject === "iel") {
+        var random = getRandom(0,3);
+        var randomSubjects = ['iel', 'on', 'elle', 'il'];
+    } else if (verb.subject ==="iels") {
+        var random = getRandom(0,2);
+        var randomSubjects = ['iels', 'elles', 'ils'];
+    } else {
+        var random = 0;
+        var randomSubjects = [verb.subject];
+    }
+    return randomSubjects[random].charAt(0).toUpperCase() + randomSubjects[random].slice(1);
+}
+
+// Returns conjugation of infinitive for given tense and subject
 function getSolution() {
-    var ending = verb.conjugations[verb.tense][verb.subject];
+    var ending = verb.conjugation[verb.subject];
     if (verb.tense !== "passé composé") { 
         return verb.infinitive.slice(0,verb.infinitive.length-2) + ending;
     } else {
         return ending
     }
-}
-
-// Returns a random subject to display
-// allows for randomness in il/elle/iel or ils/elles/iels
-// otherwise displays subjects normally
-function getRandomDisplaySubject() {
-    var random = getRandom(0,2);
-    if (verb.subject === "iel") {
-        var randomSubjects = ['iel', 'elle', 'il'];
-    } else if (verb.subject ==="iels") {
-        var randomSubjects = ['iels', 'elles', 'ils'];
-    } else {
-        var randomSubjects = [verb.subject];
-        random = 0;
-    }
-    return randomSubjects[random].charAt(0).toUpperCase() + randomSubjects[random].slice(1);
 }
 
 // Prompts user that input is (in)correct 

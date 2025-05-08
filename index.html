@@ -11,18 +11,33 @@
   <h1>VerbeFR</h1>
   <p>This applet will help you study French verb congugation.</p>
 
-  <button type=""button" onclick="getVerb()">Get Verb!</button>
+  <button type="button" onclick="getVerb();">New Verb</button><br><br>
 
-  <p id="verb"></p>
-  <p id="meaning"></p>
-  <p id="tense"></p>
-  <p id="regular"></p>
+  <p>Select tenses to study:</p>
+
+  <input type="checkbox" id="présent" class="tense" value="présent">
+  <value for="">présent</value>
+  <input type="checkbox" id="passé composé" class="tense" value="passé composé">
+  <value for="">passé composé</value>
+  <input type="checkbox" id="imparfait" class="tense" value="imparfait">
+  <value for="">imparfait</value>
+  <input type="checkbox" id="futur simple" class="tense" value="futur simple">
+  <value for="">futur simple</value>
+  <input type="checkbox" id="conditionnel présent" class="tense" value="conditionnel présent">
+  <value for="">conditionnel présent</value>
+  <input type="checkbox" id="subjonctif présent" class="tense" value="subjonctif présent">
+  <value for="">subjonctif présent</value><br><br>
 
   <form onsubmit="checkEntry(); return false" autocomplete="off">
     <label id="subject"></label>
     <input type="text" id="solution" name="solution"><br><br>
     <input type="submit" value="Submit">
   </form>
+
+  <p id="verb"></p>
+  <p id="meaning"></p>
+  <p id="tense"></p>
+  <p id="regular"></p>
 
   <p id="correct"></p>
 </body>
