@@ -90,7 +90,7 @@ function getSolution() {
 // Prompts user that input is (in)correct 
 function checkEntry() {
     // Get input text from user
-    input = document.getElementById("solution").value;
+    input = document.getElementById("solution").value.toLowerCase();
     // Compare input to solution (a global variable)
     if( input === verb.solution) {
         document.getElementById("correct").innerHTML = "Correct! The answer is: " + verb.solution;
