@@ -24,8 +24,8 @@ function getVerb() {
                 document.getElementById("verb").innerHTML = "Verb: " + verb.infinitive;
                 document.getElementById("solution").placeholder = verb.infinitive;
                 document.getElementById("meaning").innerHTML = "Meaning: " + verb.meaning;
-                document.getElementById("tense").innerHTML = "Verb tense: " + verb.tense;
-                document.getElementById("regular").innerHTML = "Verb regularity: " + verb.group;
+                document.getElementById("tense").innerHTML = "Verb tense: " + verb.tense.replace("_", " ");
+                document.getElementById("regular").innerHTML = "Verb regularity: " + verb.regular;
                 document.getElementById("subject").innerHTML = getRandomDisplaySubject();
             } else {
                 // Prompt user to provide tense
@@ -53,7 +53,7 @@ function getRandomTense() {
     var selectedTenses = []; // list of all selected tenses (as strings from element id)
     for (var i = 0; i < tenses.length; i++) {
         if (tenses[i].checked) {
-            selectedTenses.push(tenses[i].id);
+            selectedTenses.push(tenses[i].id.replace(" ", "_"));
         }
     }
     return selectedTenses[getRandom(0, selectedTenses.length-1)];
